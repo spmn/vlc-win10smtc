@@ -24,7 +24,8 @@ struct intf_sys_t
         mediaPlayer{ nullptr },
         intf{ intf },
         playlist{ pl_Get(intf) },
-        input{ nullptr }
+        input{ nullptr },
+        advertise{ false }
     {
     }
 
@@ -60,6 +61,22 @@ struct intf_sys_t
         winrt::uninit_apartment();
     }
 
+    void AdvertiseState()
+    {
+        static_assert((int)MediaPlaybackStatus::Closed == 0, "Treat default case explicitely");
+
+        static std::unordered_map<input_state_e, MediaPlaybackStatus> map = {
+            {OPENING_S, MediaPlaybackStatus::Changing},
+            {PLAYING_S, MediaPlaybackStatus::Playing},
+            {PAUSE_S, MediaPlaybackStatus::Paused},
+            {END_S, MediaPlaybackStatus::Stopped}
+        };
+        // Default/implicit case: set playback status to `Closed`
+
+        SMTC().PlaybackStatus(map[input_state]);
+        Disp().Update();
+    }
+
     SystemMediaTransportControls SMTC() {
         return mediaPlayer.SystemMediaTransportControls();
     }
@@ -73,6 +90,12 @@ struct intf_sys_t
     intf_thread_t* intf;
     playlist_t* playlist;
     input_thread_t* input;
+    input_state_e input_state;
+    vlc_thread_t thread;
+    vlc_mutex_t lock;
+    vlc_cond_t wait;
+
+    bool advertise;
 };
 
 
@@ -88,6 +111,13 @@ int InputEvent(vlc_object_t* object, char const* cmd,
 
     if (newval.i_int == INPUT_EVENT_STATE) {
         input_state_e state = (input_state_e)var_GetInteger(input, "state");
+
+        // send update to winrt thread
+        vlc_mutex_lock(&sys->lock);
+        sys->advertise = true;
+        sys->input_state = state;
+        vlc_cond_signal(&sys->wait);
+        vlc_mutex_unlock(&sys->lock);
 
         msg_Dbg(input, "New input state: %d", state);
     }
@@ -119,6 +149,29 @@ int PlaylistEvent(vlc_object_t* object, char const* cmd,
     return VLC_SUCCESS;
 }
 
+void* Thread(void* handle)
+{
+    intf_thread_t* intf = (intf_thread_t*)handle;
+    intf_sys_t* sys = intf->p_sys;
+
+    sys->InitializeMediaPlayer();
+
+    while (1) {
+        vlc_mutex_lock(&sys->lock);
+
+        while (!sys->advertise)
+            vlc_cond_wait(&sys->wait, &sys->lock);
+
+        sys->AdvertiseState();
+        sys->advertise = false;
+
+        vlc_mutex_unlock(&sys->lock);
+    }
+
+    sys->UninitializeMediaPlayer();
+    return nullptr;
+}
+
 int Open(vlc_object_t* object)
 {
     intf_thread_t* intf = (intf_thread_t*)object;
@@ -129,9 +182,17 @@ int Open(vlc_object_t* object)
     if (!sys)
         return VLC_EGENERIC;
 
-    sys->InitializeMediaPlayer();
-    var_AddCallback(sys->playlist, "input-current", PlaylistEvent, intf);
+    vlc_mutex_init(&sys->lock);
+    vlc_cond_init(&sys->wait);
 
+    if (vlc_clone(&sys->thread, Thread, intf, VLC_THREAD_PRIORITY_LOW)) {
+        vlc_mutex_destroy(&sys->lock);
+        vlc_cond_destroy(&sys->wait);
+        delete sys;
+        return VLC_EGENERIC;
+    }
+
+    var_AddCallback(sys->playlist, "input-current", PlaylistEvent, intf);
     return VLC_SUCCESS;
 }
 
@@ -142,7 +203,11 @@ void Close(vlc_object_t* object)
 
     assert(!sys->input);
 
-    sys->UninitializeMediaPlayer();
+    vlc_cancel(sys->thread);
+    vlc_join(sys->thread, nullptr);
+    vlc_mutex_destroy(&sys->lock);
+    vlc_cond_destroy(&sys->wait);
+
     var_DelCallback(sys->playlist, "input-current", PlaylistEvent, intf);
     delete intf->p_sys;
 }
