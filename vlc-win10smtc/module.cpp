@@ -188,27 +188,40 @@ void* Thread(void* handle)
 {
     intf_thread_t* intf = (intf_thread_t*)handle;
     intf_sys_t* sys = intf->p_sys;
+    int canc;
 
     sys->InitializeMediaPlayer();
+    vlc_cleanup_push(
+        [](void* sys) {
+            ((intf_sys_t*)sys)->UninitializeMediaPlayer();
+        },
+        sys
+    );
 
     while (1) {
         vlc_mutex_lock(&sys->lock);
+        mutex_cleanup_push(&sys->lock);
 
         while (!sys->advertise)
             vlc_cond_wait(&sys->wait, &sys->lock);
+
+        canc = vlc_savecancel();
 
         sys->AdvertiseState();
         if (sys->input_state >= PLAYING_S && !sys->metadata_advertised) {
             sys->ReadAndAdvertiseMetadata();
             sys->metadata_advertised = true;
         }
-
         sys->advertise = false;
 
+        vlc_restorecancel(canc);
+
+        vlc_cleanup_pop();
         vlc_mutex_unlock(&sys->lock);
     }
 
-    sys->UninitializeMediaPlayer();
+    vlc_cleanup_pop();
+    sys->UninitializeMediaPlayer(); // irrelevant; control flow shouldn't get here unless some UB occurs
     return nullptr;
 }
 
