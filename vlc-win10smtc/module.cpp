@@ -6,6 +6,7 @@
 #include <vlc_interface.h>
 #include <vlc_playlist.h>
 #include <vlc_input.h>
+#include <libvlc.h>
 
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Media.h>
@@ -88,7 +89,7 @@ struct intf_sys_t
 
             if (buf) {
                 ret = winrt::to_hstring(buf);
-                free(buf);
+                libvlc_free(buf);
             }
             else {
                 ret = def;
