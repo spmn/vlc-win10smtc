@@ -7,6 +7,10 @@
 #include <vlc_playlist.h>
 #include <vlc_input.h>
 
+#include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.Media.h>
+#include <winrt/Windows.Media.Playback.h>
+
 
 struct intf_sys_t
 {
