@@ -106,6 +106,9 @@ struct intf_sys_t
 
     void ReadAndAdvertiseMetadata()
     {
+        if (!input)
+            return;
+
         input_item_t* item = input_GetItem(input);
         winrt::hstring title, artist;
 
