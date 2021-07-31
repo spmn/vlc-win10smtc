@@ -141,7 +141,8 @@ int PlaylistEvent(vlc_object_t* object, char const* cmd,
     intf_sys_t* sys = intf->p_sys;
     input_thread_t* input = (input_thread_t*)newval.p_address;
 
-    assert(input);
+    if (input == nullptr)
+        return VLC_SUCCESS;
 
     sys->input = (input_thread_t*)vlc_object_hold(input);
     var_AddCallback(input, "intf-event", InputEvent, intf);
