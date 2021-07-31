@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{2b640135-fb68-445d-b73f-02172ca2cece}</ProjectGuid>
+    <RootNamespace>vlcwin10smtc</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>libwin10smtc_plugin</TargetName>
+    <IncludePath>$(SolutionDir)sdk\include\vlc\;$(SolutionDir)sdk\include\vlc\plugins\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)sdk\lib\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>libwin10smtc_plugin</TargetName>
+    <IncludePath>$(SolutionDir)sdk\include\vlc\;$(SolutionDir)sdk\include\vlc\plugins\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)sdk\lib\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>libwin10smtc_plugin</TargetName>
+    <IncludePath>$(SolutionDir)sdk\include\vlc\;$(SolutionDir)sdk\include\vlc\plugins\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)sdk\lib64\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>libwin10smtc_plugin</TargetName>
+    <IncludePath>$(SolutionDir)sdk\include\vlc\;$(SolutionDir)sdk\include\vlc\plugins\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)sdk\lib64\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>MODULE_STRING="win10smtc";__PLUGIN__;_FILE_OFFSET_BITS=64;_REENTRANT;_THREAD_SAFE;WIN32_LEAN_AND_MEAN;_CRT_NONSTDC_NO_DEPRECATE;WIN32;_DEBUG;VLCWIN10SMTC_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;libvlc.lib;libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>MODULE_STRING="win10smtc";__PLUGIN__;_FILE_OFFSET_BITS=64;_REENTRANT;_THREAD_SAFE;WIN32_LEAN_AND_MEAN;_CRT_NONSTDC_NO_DEPRECATE;WIN32;NDEBUG;VLCWIN10SMTC_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;libvlc.lib;libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>MODULE_STRING="win10smtc";__PLUGIN__;_FILE_OFFSET_BITS=64;_REENTRANT;_THREAD_SAFE;WIN32_LEAN_AND_MEAN;_CRT_NONSTDC_NO_DEPRECATE;_DEBUG;VLCWIN10SMTC_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;libvlc.lib;libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>MODULE_STRING="win10smtc";__PLUGIN__;_FILE_OFFSET_BITS=64;_REENTRANT;_THREAD_SAFE;WIN32_LEAN_AND_MEAN;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;VLCWIN10SMTC_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;libvlc.lib;libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="module.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">_CRT_NONSTDC_NO_DEPRECATE;WIN32;MODULE_STRING="win10smtc";_DEBUG;VLCWIN10SMTC_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">_CRT_NONSTDC_NO_DEPRECATE;WIN32;MODULE_STRING="win10smtc";NDEBUG;VLCWIN10SMTC_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">_CRT_NONSTDC_NO_DEPRECATE;MODULE_STRING="win10smtc";_DEBUG;VLCWIN10SMTC_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_CRT_NONSTDC_NO_DEPRECATE;MODULE_STRING="win10smtc";NDEBUG;VLCWIN10SMTC_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\sdk\include\vlc\deprecated.h" />
+    <ClInclude Include="..\sdk\include\vlc\libvlc.h" />
+    <ClInclude Include="..\sdk\include\vlc\libvlc_dialog.h" />
+    <ClInclude Include="..\sdk\include\vlc\libvlc_events.h" />
+    <ClInclude Include="..\sdk\include\vlc\libvlc_media.h" />
+    <ClInclude Include="..\sdk\include\vlc\libvlc_media_discoverer.h" />
+    <ClInclude Include="..\sdk\include\vlc\libvlc_media_library.h" />
+    <ClInclude Include="..\sdk\include\vlc\libvlc_media_list.h" />
+    <ClInclude Include="..\sdk\include\vlc\libvlc_media_list_player.h" />
+    <ClInclude Include="..\sdk\include\vlc\libvlc_media_player.h" />
+    <ClInclude Include="..\sdk\include\vlc\libvlc_renderer_discoverer.h" />
+    <ClInclude Include="..\sdk\include\vlc\libvlc_version.h" />
+    <ClInclude Include="..\sdk\include\vlc\libvlc_vlm.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_about.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_access.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_actions.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_addons.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_aout.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_aout_volume.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_arrays.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_atomic.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_avcodec.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_bits.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_block.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_block_helper.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_boxes.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_charset.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_codec.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_common.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_config.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_configuration.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_config_cat.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_cpu.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_demux.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_dialog.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_epg.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_es.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_es_out.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_events.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_filter.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_fingerprinter.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_fourcc.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_fs.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_gcrypt.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_http.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_httpd.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_image.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_inhibit.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_input.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_input_item.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_interface.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_interrupt.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_keystore.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_main.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_md5.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_media_library.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_memstream.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_messages.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_meta.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_meta_fetcher.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_mime.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_modules.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_mouse.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_mtime.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_network.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_objects.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_opengl.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_picture.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_picture_fifo.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_picture_pool.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_playlist.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_plugin.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_probe.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_rand.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_renderer_discovery.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_services_discovery.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_sout.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_spu.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_stream.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_stream_extractor.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_strings.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_subpicture.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_text_style.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_threads.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_timestamp_helper.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_tls.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_url.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_variables.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_video_splitter.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_viewpoint.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_vlm.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_vout.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_vout_display.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_vout_osd.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_vout_window.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_xlib.h" />
+    <ClInclude Include="..\sdk\include\vlc\plugins\vlc_xml.h" />
+    <ClInclude Include="..\sdk\include\vlc\vlc.h" />
+    <ClInclude Include="msvc-compat\poll.h" />
+    <ClInclude Include="msvc-compat\types.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
