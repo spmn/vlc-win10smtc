@@ -11,6 +11,9 @@
 #include <winrt/Windows.Media.h>
 #include <winrt/Windows.Media.Playback.h>
 
+// uh
+using namespace winrt::Windows::Media;
+
 
 struct intf_sys_t
 {
@@ -18,11 +21,54 @@ struct intf_sys_t
     void operator=(const intf_sys_t&) = delete;
 
     explicit intf_sys_t(intf_thread_t* intf) :
+        mediaPlayer{ nullptr },
         intf{ intf },
         playlist{ pl_Get(intf) },
         input{ nullptr }
     {
     }
+
+    void InitializeMediaPlayer()
+    {
+        winrt::init_apartment();
+
+        mediaPlayer = Playback::MediaPlayer();
+        mediaPlayer.CommandManager().IsEnabled(false);
+
+        SMTC().ButtonPressed(
+            [this](SystemMediaTransportControls sender, SystemMediaTransportControlsButtonPressedEventArgs args) {
+                msg_Dbg(this->intf, "SMTC ButtonPressed: %d", args.Button());
+            }
+        );
+
+        SMTC().IsPlayEnabled(true);
+        SMTC().IsPauseEnabled(true);
+        SMTC().IsStopEnabled(true);
+        SMTC().IsPreviousEnabled(true);
+        SMTC().IsNextEnabled(true);
+
+        SMTC().PlaybackStatus(MediaPlaybackStatus::Closed);
+        SMTC().IsEnabled(true);
+
+        Disp().Type(MediaPlaybackType::Music);
+        Disp().Update();
+    }
+
+    void UninitializeMediaPlayer()
+    {
+        mediaPlayer = Playback::MediaPlayer(nullptr);
+        winrt::uninit_apartment();
+    }
+
+    SystemMediaTransportControls SMTC() {
+        return mediaPlayer.SystemMediaTransportControls();
+    }
+
+    SystemMediaTransportControlsDisplayUpdater Disp() {
+        return SMTC().DisplayUpdater();
+    }
+
+    Playback::MediaPlayer mediaPlayer;
 
     intf_thread_t* intf;
     playlist_t* playlist;
@@ -83,6 +129,7 @@ int Open(vlc_object_t* object)
     if (!sys)
         return VLC_EGENERIC;
 
+    sys->InitializeMediaPlayer();
     var_AddCallback(sys->playlist, "input-current", PlaylistEvent, intf);
 
     return VLC_SUCCESS;
@@ -95,6 +142,7 @@ void Close(vlc_object_t* object)
 
     assert(!sys->input);
 
+    sys->UninitializeMediaPlayer();
     var_DelCallback(sys->playlist, "input-current", PlaylistEvent, intf);
     delete intf->p_sys;
 }
