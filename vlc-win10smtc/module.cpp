@@ -40,6 +40,31 @@ struct intf_sys_t
 
         SMTC().ButtonPressed(
             [this](SystemMediaTransportControls sender, SystemMediaTransportControlsButtonPressedEventArgs args) {
+                playlist_Lock(playlist);
+
+                switch (args.Button()) {
+                case SystemMediaTransportControlsButton::Play:
+                    playlist_Play(playlist);
+                    break;
+
+                case SystemMediaTransportControlsButton::Pause:
+                    playlist_Pause(playlist);
+                    break;
+
+                case SystemMediaTransportControlsButton::Stop:
+                    playlist_Stop(playlist);
+                    break;
+
+                case SystemMediaTransportControlsButton::Next:
+                    playlist_Next(playlist);
+                    break;
+
+                case SystemMediaTransportControlsButton::Previous:
+                    playlist_Prev(playlist);
+                    break;
+                }
+
+                playlist_Unlock(playlist);
                 msg_Dbg(this->intf, "SMTC ButtonPressed: %d", args.Button());
             }
         );
