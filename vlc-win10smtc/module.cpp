@@ -25,7 +25,8 @@ struct intf_sys_t
         intf{ intf },
         playlist{ pl_Get(intf) },
         input{ nullptr },
-        advertise{ false }
+        advertise{ false },
+        metadata_advertised{ false }
     {
     }
 
@@ -77,6 +78,36 @@ struct intf_sys_t
         Disp().Update();
     }
 
+    void ReadAndAdvertiseMetadata()
+    {
+        input_item_t* item = input_GetItem(input);
+        winrt::hstring title, artist;
+
+        auto to_hstring = [](char* buf, winrt::hstring def) {
+            winrt::hstring ret;
+
+            if (buf) {
+                ret = winrt::to_hstring(buf);
+                free(buf);
+            }
+            else {
+                ret = def;
+            }
+
+            return ret;
+        };
+
+        title = to_hstring(input_item_GetTitleFbName(item), L"Unknown Title");
+        artist = to_hstring(input_item_GetArtist(item), L"Unknown Artist");
+
+        Disp().MusicProperties().Title(title);
+        Disp().MusicProperties().Artist(artist);
+
+        // TODO: artwork
+
+        Disp().Update();
+    }
+
     SystemMediaTransportControls SMTC() {
         return mediaPlayer.SystemMediaTransportControls();
     }
@@ -96,6 +127,7 @@ struct intf_sys_t
     vlc_cond_t wait;
 
     bool advertise;
+    bool metadata_advertised; // was the last song advertised to Windows?
 };
 
 
@@ -144,6 +176,7 @@ int PlaylistEvent(vlc_object_t* object, char const* cmd,
     if (input == nullptr)
         return VLC_SUCCESS;
 
+    sys->metadata_advertised = false; // new song, mark it as unadvertised
     sys->input = (input_thread_t*)vlc_object_hold(input);
     var_AddCallback(input, "intf-event", InputEvent, intf);
 
@@ -164,6 +197,11 @@ void* Thread(void* handle)
             vlc_cond_wait(&sys->wait, &sys->lock);
 
         sys->AdvertiseState();
+        if (sys->input_state >= PLAYING_S && !sys->metadata_advertised) {
+            sys->ReadAndAdvertiseMetadata();
+            sys->metadata_advertised = true;
+        }
+
         sys->advertise = false;
 
         vlc_mutex_unlock(&sys->lock);
