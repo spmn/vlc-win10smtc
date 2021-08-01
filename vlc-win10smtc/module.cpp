@@ -70,7 +70,6 @@ struct intf_sys_t
                 }
 
                 playlist_Unlock(playlist);
-                msg_Dbg(this->intf, "SMTC ButtonPressed: %d", args.Button());
             }
         );
 
@@ -190,15 +189,11 @@ int InputEvent(vlc_object_t* object, char const* cmd,
         sys->input_state = state;
         vlc_cond_signal(&sys->wait);
         vlc_mutex_unlock(&sys->lock);
-
-        msg_Dbg(input, "New input state: %d", state);
     }
     else if (newval.i_int == INPUT_EVENT_DEAD) {
         assert(sys->input);
         vlc_object_release(sys->input);
         sys->input = nullptr;
-
-        msg_Dbg(input, "Input died");
     }
 
     return VLC_SUCCESS;
