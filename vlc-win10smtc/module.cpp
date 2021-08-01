@@ -11,6 +11,10 @@
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Media.h>
 #include <winrt/Windows.Media.Playback.h>
+#include <winrt/Windows.Storage.h>
+#include <winrt/Windows.Storage.Streams.h>
+
+#define DEFAULT_THUMBNAIL_URI L"https://upload.wikimedia.org/wikipedia/commons/3/38/VLC_icon.png"
 
 // uh
 using namespace winrt::Windows::Media;
@@ -23,6 +27,7 @@ struct intf_sys_t
 
     explicit intf_sys_t(intf_thread_t* intf) :
         mediaPlayer{ nullptr },
+        defaultArt{ nullptr },
         intf{ intf },
         playlist{ pl_Get(intf) },
         input{ nullptr },
@@ -78,6 +83,10 @@ struct intf_sys_t
         SMTC().PlaybackStatus(MediaPlaybackStatus::Closed);
         SMTC().IsEnabled(true);
 
+        winrt::Windows::Foundation::Uri uri{ DEFAULT_THUMBNAIL_URI };
+        defaultArt = winrt::Windows::Storage::Streams::RandomAccessStreamReference::CreateFromUri(uri);
+        
+        Disp().Thumbnail(defaultArt);
         Disp().Type(MediaPlaybackType::Music);
         Disp().Update();
     }
@@ -132,7 +141,8 @@ struct intf_sys_t
         Disp().MusicProperties().Title(title);
         Disp().MusicProperties().Artist(artist);
 
-        // TODO: artwork
+        // TODO: use artwork provided by ID3tag (if exists)
+        Disp().Thumbnail(defaultArt);
 
         Disp().Update();
     }
@@ -146,6 +156,7 @@ struct intf_sys_t
     }
 
     Playback::MediaPlayer mediaPlayer;
+    winrt::Windows::Storage::Streams::RandomAccessStreamReference defaultArt;
 
     intf_thread_t* intf;
     playlist_t* playlist;
