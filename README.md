@@ -21,7 +21,7 @@ Plugin that integrates VLC Media Player with Windows 10 System Media Transport C
 
 Official VLC build instructions recommend mingw. However, mingw doesn't support C++/WinRT, so for this plugin MSVC is used instead. In order to build this plugin you'll need: Visual Studio, Windows 10 SDK and VLC SDK:
 
-1. Obtain VLC SDK from [here (x64)](https://get.videolan.org/vlc/3.0.16/win64/vlc-3.0.16-win64.7z) or [here (x86)](https://get.videolan.org/vlc/3.0.16/win32/vlc-3.0.16-win32.7z) and copy `sdk` directory into the root directory of the repository. You may need to rename `lib` to `lib64` for 64-bit builds.
+1. Download the VLC SDK for your target architecture ([x64](https://get.videolan.org/vlc/3.0.23/win64/vlc-3.0.23-win64.7z), [x86](https://get.videolan.org/vlc/3.0.23/win32/vlc-3.0.23-win32.7z) or [arm64](https://get.videolan.org/vlc/3.0.23/winarm64/vlc-3.0.23-winarm64.7z)) and copy its `sdk` directory into the repository root. Then rename `sdk\lib` to match the target: `lib64` for x64, `lib` for x86, `libarm64` for arm64.
 2. Load .sln file in Visual Studio
 3. Select target architecture
 4. Build solution
