@@ -1,0 +1,74 @@
+name: Build plugin
+
+# Shared build, called by both build.yml (CI) and release.yml.
+on:
+  workflow_call:
+    inputs:
+      fail-fast:
+        description: Stop the other architectures once one of them fails.
+        type: boolean
+        default: false
+
+env:
+  VLC_SDK_BASE: https://download.videolan.org/pub/videolan/vlc
+  VLC_VERSION: 3.0.23
+
+jobs:
+  build:
+    runs-on: windows-2022
+
+    strategy:
+      fail-fast: ${{ inputs.fail-fast }}
+      matrix:
+        include:
+          - platform: x64
+            sdk_dir: win64
+            lib_dir: lib64
+          - platform: x86
+            sdk_dir: win32
+            lib_dir: lib
+          - platform: arm64
+            sdk_dir: winarm64
+            lib_dir: libarm64
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download VLC SDK
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="$VLC_SDK_BASE/$VLC_VERSION/${{ matrix.sdk_dir }}"
+          archive="vlc-$VLC_VERSION-${{ matrix.sdk_dir }}.7z"
+
+          curl -fsSL -o "$archive" "$base/$archive"
+          curl -fsSL -o "$archive.sha256" "$base/$archive.sha256"
+
+          sha256sum -c "$archive.sha256"
+
+          7z x -y "$archive" "vlc-$VLC_VERSION/sdk/*"
+          mv "vlc-$VLC_VERSION/sdk" sdk
+
+          # The SDK always ships its import libraries in sdk/lib; the project
+          # expects a per-architecture directory name.
+          if [ "${{ matrix.lib_dir }}" != "lib" ]; then
+            mv sdk/lib "sdk/${{ matrix.lib_dir }}"
+          fi
+
+      - uses: microsoft/setup-msbuild@v2
+
+      - name: Build
+        run: >
+          msbuild vlc-win10smtc.sln -m
+          -p:Configuration=Release
+          -p:Platform=${{ matrix.platform }}
+          -p:OutDir=${{ github.workspace }}\out\
+
+      - name: Upload plugin
+        uses: actions/upload-artifact@v4
+        with:
+          name: libwin10smtc_plugin_${{ matrix.platform }}
+          path: |
+            out/libwin10smtc_plugin.dll
+            out/libwin10smtc_plugin.pdb
+          if-no-files-found: error

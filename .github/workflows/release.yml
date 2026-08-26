@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    tags: ['build-*']
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-plugin.yml
+    with:
+      fail-fast: true
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # --generate-notes diffs against the previous tag.
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: libwin10smtc_plugin_*
+          path: assets
+
+      - name: Zip each architecture
+        run: |
+          set -euo pipefail
+          cd assets
+          for dir in */; do
+            (cd "$dir" && zip -q "../${dir%/}.zip" libwin10smtc_plugin.dll libwin10smtc_plugin.pdb)
+          done
+          ls -la ./*.zip
+
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          title="Build ${TAG#build-}"
+
+          gh release create "$TAG" \
+            --draft \
+            --title "$title" \
+            --generate-notes \
+            assets/*.zip

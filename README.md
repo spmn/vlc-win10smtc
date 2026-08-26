@@ -11,9 +11,9 @@ Plugin that integrates VLC Media Player with Windows 10 System Media Transport C
 
 ## Installation
 
-1. Get the plugin from [GitHub Releases](https://github.com/spmn/vlc-win10smtc/releases)
-2. Copy `libwin10smtc_plugin.dll` to `<path-to-VLC>\plugins\misc`
-    - *Note:* DLL architecture must match vlc.exe architecture (eg: x86 plugin is not compatible with x64 VLC)
+1. Download the plugin matching your VLC architecture from [GitHub Releases](https://github.com/spmn/vlc-win10smtc/releases)
+    - *Note:* the plugin architecture must match vlc.exe, not Windows (eg: an x86 plugin does not work with x64 VLC)
+2. Extract `libwin10smtc_plugin.dll` to `<path-to-VLC>\plugins\misc`
 3. Restart VLC and navigate to Advanced Preferences -> Interface -> Control Interfaces
 4. Check `Windows 10 SMTC integration` and hit Save
 
