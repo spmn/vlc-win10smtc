@@ -9,10 +9,6 @@ on:
         type: boolean
         default: false
 
-env:
-  VLC_SDK_BASE: https://download.videolan.org/pub/videolan/vlc
-  VLC_VERSION: 3.0.23
-
 jobs:
   build:
     runs-on: windows-2022
@@ -20,48 +16,27 @@ jobs:
     strategy:
       fail-fast: ${{ inputs.fail-fast }}
       matrix:
-        include:
-          - platform: x64
-            sdk_dir: win64
-            lib_dir: lib64
-          - platform: x86
-            sdk_dir: win32
-            lib_dir: lib
-          - platform: arm64
-            sdk_dir: winarm64
-            lib_dir: libarm64
+        platform: [x64, x86, arm64]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download VLC SDK
-        shell: bash
-        run: |
-          set -euo pipefail
-          base="$VLC_SDK_BASE/$VLC_VERSION/${{ matrix.sdk_dir }}"
-          archive="vlc-$VLC_VERSION-${{ matrix.sdk_dir }}.7z"
-
-          curl -fsSL -o "$archive" "$base/$archive"
-          curl -fsSL -o "$archive.sha256" "$base/$archive.sha256"
-
-          sha256sum -c "$archive.sha256"
-
-          7z x -y "$archive" "vlc-$VLC_VERSION/sdk/*"
-          mv "vlc-$VLC_VERSION/sdk" sdk
-
-          # The SDK always ships its import libraries in sdk/lib; the project
-          # expects a per-architecture directory name.
-          if [ "${{ matrix.lib_dir }}" != "lib" ]; then
-            mv sdk/lib "sdk/${{ matrix.lib_dir }}"
-          fi
+      - name: Fetch VLC SDKs
+        shell: pwsh
+        run: ./tools/fetch-sdks.ps1 -Platform ${{ matrix.platform }}
 
       - uses: microsoft/setup-msbuild@v2
+
+      - name: Short commit id
+        id: commit
+        run: '"short_sha=$(git rev-parse --short HEAD)" >> $env:GITHUB_OUTPUT'
 
       - name: Build
         run: >
           msbuild vlc-win10smtc.sln -m
           -p:Configuration=Release
           -p:Platform=${{ matrix.platform }}
+          -p:PluginBuildId=${{ steps.commit.outputs.short_sha }}
           -p:OutDir=${{ github.workspace }}\out\
 
       - name: Upload plugin

@@ -2,13 +2,30 @@ name: Release
 
 on:
   push:
-    tags: ['build-*']
+    tags: ['v*.*.*']
 
 permissions:
   contents: read
 
 jobs:
+  # Before spending three builds on a tag that would ship mislabelled binaries.
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the tag matches plugin.h
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          version=$(sed -n 's/^#define PLUGIN_VERSION_\(MAJOR\|MINOR\|PATCH\) *//p' \
+            vlc-win10smtc/plugin.h | paste -sd.)
+          [ "v$version" = "$TAG" ] || { echo "plugin.h says $version, tag says $TAG"; exit 1; }
+
   build:
+    needs: check
     uses: ./.github/workflows/build-plugin.yml
     with:
       fail-fast: true
@@ -32,24 +49,19 @@ jobs:
           path: assets
 
       - name: Zip each architecture
+        env:
+          TAG: ${{ github.ref_name }}
         run: |
           set -euo pipefail
           cd assets
-          for dir in */; do
-            (cd "$dir" && zip -q "../${dir%/}.zip" libwin10smtc_plugin.dll libwin10smtc_plugin.pdb)
+          for dir in libwin10smtc_plugin_*/; do
+            arch=${dir#libwin10smtc_plugin_}
+            (cd "$dir" && zip -q "../libwin10smtc_plugin_${TAG}_${arch%/}.zip" \
+              libwin10smtc_plugin.dll libwin10smtc_plugin.pdb)
           done
           ls -la ./*.zip
 
       - name: Create draft release
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ github.ref_name }}
-        run: |
-          set -euo pipefail
-          title="Build ${TAG#build-}"
-
-          gh release create "$TAG" \
-            --draft \
-            --title "$title" \
-            --generate-notes \
-            assets/*.zip
+        run: gh release create "${{ github.ref_name }}" --draft --generate-notes assets/*.zip
