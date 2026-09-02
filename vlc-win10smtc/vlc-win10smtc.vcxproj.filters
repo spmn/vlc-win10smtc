@@ -15,21 +15,51 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="module.cpp">
+    <ClCompile Include="vlc3_plugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="host_icon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="host_window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="delayload.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="player_model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="smtc_sink.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="msvc-compat\poll.h">
+    <ClInclude Include="host_icon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="msvc-compat\types.h">
+    <ClInclude Include="host_window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="plugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="playback_commands.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="player_model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="player_state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vlc_glue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="smtc_sink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vlc_msvc_shims.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

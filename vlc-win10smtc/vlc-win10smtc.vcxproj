@@ -114,20 +114,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="delayload.cpp" />
-    <ClCompile Include="module.cpp">
+    <ClCompile Include="host_icon.cpp" />
+    <ClCompile Include="host_window.cpp" />
+    <ClCompile Include="player_model.cpp" />
+    <ClCompile Include="smtc_sink.cpp" />
+    <ClCompile Include="vlc3_plugin.cpp">
       <AdditionalIncludeDirectories>$(VlcSdkDir)vlc3\include\vlc\;$(VlcSdkDir)vlc3\include\vlc\plugins\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>MODULE_STRING="win10smtc";__PLUGIN__;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="plugin.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="msvc-compat\poll.h" />
-    <ClInclude Include="msvc-compat\types.h" />
+    <ClInclude Include="host_icon.h" />
+    <ClInclude Include="host_window.h" />
+    <ClInclude Include="playback_commands.h" />
+    <ClInclude Include="player_model.h" />
+    <ClInclude Include="player_state.h" />
     <ClInclude Include="plugin.h" />
+    <ClInclude Include="smtc_sink.h" />
+    <ClInclude Include="vlc_glue.h" />
+    <ClInclude Include="vlc_msvc_shims.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
