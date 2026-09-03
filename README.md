@@ -6,7 +6,7 @@ Plugin that integrates VLC Media Player with Windows System Media Transport Cont
 
 ## Requirements
 
-- VLC 3.0.x (VLC 4 is not supported)
+- VLC 3.0.x or VLC 4.0.0-dev nightly
 - Windows 10 Version 1607+ or Windows 11
 - [Microsoft Visual C++ Redistributable](https://learn.microsoft.com/cpp/windows/latest-supported-vc-redist) 2022 or later, for the same architecture as VLC
 

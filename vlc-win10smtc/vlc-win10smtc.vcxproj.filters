@@ -18,6 +18,9 @@
     <ClCompile Include="vlc3_plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="vlc4_plugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="host_icon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

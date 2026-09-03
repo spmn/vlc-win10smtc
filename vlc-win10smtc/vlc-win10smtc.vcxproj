@@ -88,7 +88,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <DelayLoadDLLs>libvlccore.dll;libvlc.dll</DelayLoadDLLs>
-      <AdditionalDependencies>kernel32.lib;user32.lib;ole32.lib;oleaut32.lib;version.lib;shcore.lib;shlwapi.lib;delayimp.lib;WindowsApp.lib;$(VlcSdkDir)vlc3\$(VlcLibDir)libvlc.lib;$(VlcSdkDir)vlc3\$(VlcLibDir)libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;ole32.lib;oleaut32.lib;version.lib;shcore.lib;shlwapi.lib;delayimp.lib;WindowsApp.lib;$(VlcSdkDir)vlc3\$(VlcLibDir)libvlc.lib;$(VlcSdkDir)vlc3\$(VlcLibDir)libvlccore.lib;$(VlcSdkDir)vlc4\$(VlcLibDir)libvlccore.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
@@ -120,6 +120,9 @@
     <ClCompile Include="smtc_sink.cpp" />
     <ClCompile Include="vlc3_plugin.cpp">
       <AdditionalIncludeDirectories>$(VlcSdkDir)vlc3\include\vlc\;$(VlcSdkDir)vlc3\include\vlc\plugins\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="vlc4_plugin.cpp">
+      <AdditionalIncludeDirectories>$(VlcSdkDir)vlc4\include\vlc\;$(VlcSdkDir)vlc4\include\vlc\plugins\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
